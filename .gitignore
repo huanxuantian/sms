@@ -1,0 +1,6 @@
+/traget/
+/log/
+*.log
+
+/*.log.[0-9]*
+*.bak
