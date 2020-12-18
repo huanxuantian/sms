@@ -70,10 +70,12 @@ public class Port {
 			if(in!=null)
 			{
 				in.close();
+				in=null;
 			}
 			if(out!=null)
 			{
 				out.close();
+				out=null;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -81,6 +83,7 @@ public class Port {
 		if(serialPort!=null)
 		{
 			serialPort.close();
+			serialPort=null;
 		}
 		return true;
 	}

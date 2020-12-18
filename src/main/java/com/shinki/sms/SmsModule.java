@@ -78,7 +78,10 @@ public class SmsModule {
 	{
 		if(this.dev_name!=null)
 		{
-			port = new Port();
+			if(port==null)
+			{
+				port = new Port();
+			}
 		}
 		return init_Port(sms_center_num);
 	}
@@ -88,6 +91,7 @@ public class SmsModule {
 		if(port!=null)
 		{
 			System.out.println("正在连接" + this.dev_name + "通讯端口...");
+			port.close();
 			if (port.open(this.dev_name,this.bundrate)) {
 				logger.info(this.dev_name +":"+ bundrate + "/通讯端口已经连接!");
 				
