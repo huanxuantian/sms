@@ -6,11 +6,12 @@ example:
 ---
 1. import sms class
 ```
-import com.shinki.sms;
+import com.shinki.sms.SMS;
 ```
 2.config and start sms
 ```
 SMS smsport = new SMS(portname,115200);	
+smsport.setSmsEventListener(new SmsListener());
 smsport.start();
 ```
 3.try to send msg

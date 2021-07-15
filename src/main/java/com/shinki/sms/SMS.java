@@ -13,13 +13,13 @@ public class SMS extends Thread{
 	public static final long TIMEOUT= 120*1000;//ms
 	public static final int MSGQUEUESIZE=20;
 	
-	private static Logger logger = LoggerFactory.getLogger(SMS.class.getName()); 
+	private static Logger logger = LoggerFactory.getLogger(SMS.class);
 	
 	private SmsModule module=null;
 	private int msg_mode = SmsModule.PDUMODE;
 	private boolean SMS_ready=false;
 	private String center_number=null;
-	private SmsListener listener=null;
+	private SmsEventListener listener=null;
 	private ArrayBlockingQueue<Message> msgQuete = new ArrayBlockingQueue<Message>(MSGQUEUESIZE);
 	public static void main(String[] args) throws Exception{
 		String msg;
@@ -42,6 +42,7 @@ public class SMS extends Thread{
 		//String center_number ="+8613010314500";
 		
 		SMS testSms = new SMS(portname,115200);
+		testSms.setSmsEventListener(new SmsListener());
 		//testSms.changeSMSMode(msg_mode);
 		testSms.start();
 		//msg = msg+ "来自设备："+testSms.module.getdevice_info();
@@ -82,7 +83,10 @@ public class SMS extends Thread{
 
 	public SMS(String comName, int bundrate,int Databit,int Stopbit,int Parity)
 	{
-		init(comName, bundrate,null);
+		if(init(comName, bundrate,null))
+		{
+			module.setPortParam(comName, bundrate, Databit, Stopbit, Parity);
+		}
 	}
 	
 	public SMS(String comName, int bundrate,String center_number)
@@ -95,9 +99,9 @@ public class SMS extends Thread{
 		return init(comName,bundrate,null);
 	}
 	
-	public void setSmsEventListener(SmsListener listener)
+	public void setSmsEventListener(SmsEventListener smsListener)
 	{
-		this.listener = listener;
+		this.listener = smsListener;
 	}
 	
 	protected boolean init(String comName, int bundrate,String center_number)
@@ -106,7 +110,6 @@ public class SMS extends Thread{
 		{
 			module = new SmsModule(comName,bundrate,msg_mode);
 			this.center_number = center_number;
-			this.listener = new SmsListener();
 		}
 		else
 		{
@@ -126,11 +129,18 @@ public class SMS extends Thread{
 	public void closeModule()
 	{
 		over();
+		if(this.module!=null)
+		{
+			
+			this.module.closePort();
+			this.module=null;
+			SMS_ready = false;
+		}
 	}
 	protected boolean startup(String center_number)
 	{
 		if(module==null) return false;
-		boolean init_ok=false;;
+		boolean init_ok=false;
 		try {
 			init_ok = module.startUp(center_number);
 			long start_tick=System.currentTimeMillis();
@@ -197,6 +207,8 @@ public class SMS extends Thread{
 	{
 		return (msgQuete.size()==0);
 	}
+	
+ @Override
 	public void run() {
 		if (this.module == null) {
 			over();
@@ -302,7 +314,8 @@ public class SMS extends Thread{
 		return -1;
 	}
 	
-	private class SmsListener implements SmsEventListener{
+	public class SmsListener implements SmsEventListener{
+  @Override
 		public void smsEvent(SmsEvent event)
 		{
 			Message msg= event.getEventMsg();

@@ -11,7 +11,7 @@
 			<!-- Maven use  id central cover system setting --> 
 			<id>mvnrepository</id>
 			<name>mvnrepository</name>
-			<url>http://www.mvnrepository.com/</url>
+			<url>https://www.mvnrepository.com/</url>
 			<layout>default</layout>
 			<releases>
 				<enabled>true</enabled>
@@ -51,6 +51,7 @@
                             <!-- <customClasspathLayout>WEB-INF/lib/$${artifact.groupIdPath}/$${artifact.artifactId}-$${artifact.version}$${dashClassifier?}.$${artifact.extension}</customClasspathLayout> -->
                             <customClasspathLayout>$${artifact.artifactId}-$${artifact.version}$${dashClassifier?}.$${artifact.extension}</customClasspathLayout>
                             <!--下面必须指定好主类-->
+                            <mainClass>com.shinki.sms.SMS</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -128,25 +129,25 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.6</version>
+            <version>1.7.16</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.6.6</version>
+            <version>1.7.16</version>
         </dependency>
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.0.7</version>
+            <version>1.2.0</version>
         </dependency>
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.0.7</version>
+            <version>1.2.0</version>
         </dependency>
 		<!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->
 		<dependency>

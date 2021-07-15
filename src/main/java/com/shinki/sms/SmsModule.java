@@ -28,7 +28,7 @@ public class SmsModule {
 	protected volatile int m_StopBits = SerialPort.STOPBITS_1;
 	protected volatile int m_parity = SerialPort.PARITY_NONE;
 	private String dev_name=null; 
-	private static Logger logger = LoggerFactory.getLogger(SmsModule.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SmsModule.class);
 	public String device_info=null;
 	
 	public static final int DEVICE_UNKNOWN=-1;
@@ -60,7 +60,7 @@ public class SmsModule {
 		this.bundrate =bundrate;
 		this.textmode = pdu0text1;
 	}
-	public void setPortParam(String portName, int baudrate, int databit, int stopbit, int parity) throws Exception {
+	public void setPortParam(String portName, int baudrate, int databit, int stopbit, int parity) {
 		dev_name = portName;
 		bundrate = baudrate;
 		m_DataBits = databit;
@@ -349,9 +349,10 @@ public class SmsModule {
 	/**
 	 * 发送短信
 	 * 
-	 * @param phoneCode 目标号码
-	 * @param msg  短信内容
-	 * @return 成功/失败
+	 * @param phoneCode
+	 *            目标号码
+	 * @param msg
+	 *            短信内容
 	 * */
 	public boolean sendSMS(String phoneCode, String msg) {
 		if (flag == false) {

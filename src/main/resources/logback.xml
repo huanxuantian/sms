@@ -50,7 +50,7 @@ ch.qos.logback.core.FileAppender (文件，不推荐使用)
 如果没设置file，活动文件的名字会根据fileNamePattern的值，每隔一段时间改变一次。“/”或者“\”会被当做目录分隔符。-->
 <!--<fileNamePattern>${LOG_HOME}/daily/${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
 <!--压缩文件的保存路径以及保存格式，这里必须将文件压缩，.%i 必须有。如果按上面的配置会报错-->
-<fileNamePattern>${LOG_HOME}/daily/${LOG_FILE}_%d{yyyy-MM-dd}.log.%i.gz</fileNamePattern>
+<fileNamePattern>${LOG_HOME}/daily/${LOG_PREFIX}_%d{yyyy-MM-dd}.log.%i.gz</fileNamePattern>
 
 <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 <!--保存文件的大小，超过该大小自动创建新文件。旧文件压缩保存到daily目录下-->

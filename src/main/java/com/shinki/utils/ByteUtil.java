@@ -111,7 +111,7 @@ public class ByteUtil {
 
 	public static byte[] subBytes(byte[] src, int begin, int count) {
 		byte[] bs = new byte[count];
-		System.arraycopy(src, begin, bs, 0, count);
+		System.arraycopy(src, begin, bs, 0, count>src.length?src.length:count);
 		return bs;
 	}
 
@@ -122,28 +122,43 @@ public class ByteUtil {
 		return data3;
 	}
 	
-	public static String byte2HexString(byte[] b) {
-		String ret = "";
-		if (b == null)
-			return ret;
-		for (int i = 0; i < b.length; i++) {
-			String hex = Integer.toHexString(b[i] & 0xFF);
-			if (hex.length() == 1) {
-				hex = '0' + hex;
-			}
-			ret = ret + hex.toUpperCase();
-		}
-		return ret;
+	public static String byte2HexString(byte[] src) {
+		StringBuilder stringBuilder = new StringBuilder("");
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+        for (int i = 0; i < src.length; i++) {
+            int v = src[i] & 0xFF;
+            String hv = Integer.toHexString(v);
+            if (hv.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hv);
+        }
+        return stringBuilder.toString();
 	}
 	public static byte[] HexString2Byte(String str)
 	{
 		return HexString2Byte(str,null);
 	}
-	
+	public static byte[] HexString2Byte(String str,boolean left_zero){
+		return HexString2Byte(str,null,left_zero);
+	}
 	public static byte[] HexString2Byte(String str ,String charsetName) {
+		return HexString2Byte(str,charsetName,false);
+	}
+	public static byte[] HexString2Byte(String str ,String charsetName,boolean left_zero) {
 		int size = (str.length() / 2) + (str.length() % 2);
 		byte[] bytes = new byte[size];
-		byte[] str_bytes = getBytes(str,charsetName);
+		byte[] str_bytes =null;
+		if(left_zero&&(str.length() % 2)>0)
+		{
+			str_bytes= getBytes("0"+str,charsetName);
+		}
+		else
+		{
+			str_bytes = getBytes(str,charsetName);
+		}
 		int j = 0;
 		for (int i = 0; j <= size;) {
 			if (i + 1 > str_bytes.length)
